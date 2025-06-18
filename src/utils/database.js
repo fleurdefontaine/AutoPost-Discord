@@ -23,14 +23,30 @@ async function addAccount(data) {
 
 async function editAccount(token, newData) {
     try {
-        const account = await Account.findOneAndUpdate(
+        const updatedAccount = await Account.findOneAndUpdate(
             { token },
-            newData,
-            { new: true }
+            { $set: newData },
+            { 
+                new: true,
+                runValidators: true
+            }
         );
-        return { success: true, account };
+
+        if (!updatedAccount) {
+            return { 
+                success: false, 
+                error: 'Account tidak ditemukan'
+            };
+        }
+
+        console.log('Account updated successfully:', updatedAccount);
+        return { success: true, account: updatedAccount };
     } catch (error) {
-        return { success: false, error: error.message };
+        console.error('Error updating account:', error);
+        return { 
+            success: false, 
+            error: error.message || 'Error saat mengupdate account'
+        };
     }
 }
 

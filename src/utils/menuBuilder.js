@@ -34,12 +34,12 @@ function createMain() {
 function selectAccount(accounts, purpose = 'edit') {
     const select = new StringSelectMenuBuilder()
         .setCustomId(`account_select_${purpose}`)
-        .setPlaceholder('Select an account to edit');
+        .setPlaceholder(purpose === 'edit' ? 'Select an account to edit' : 'Select an account to toggle auto-post');
 
     accounts.forEach(account => {
         select.addOptions(
             new StringSelectMenuOptionBuilder()
-                .setLabel(`Account: ${account.channelId}`)
+                .setLabel(`ChannelID: ${account.channelId}`)
                 .setValue(account.token)
                 .setDescription(`Message: ${account.message.substring(0, 50)}...`)
         );
